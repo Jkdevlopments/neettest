@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "type": "image",
+    "subject": "Physics",
+    "question": "",
+    "image": "",
+    "image_drive_id": "120LaK4N94-GDK1_b8Bkb0bA481uRxCTr",
+    "image_mime_type": "image/png",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "answer": "1"
+  }
+]

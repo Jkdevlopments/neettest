@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Instructions - NTA Mock Test</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #cccccc;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .brand-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0f2c59;
+            margin-left: 20px;
+        }
+
+        .home-btn {
+            background: #16a34a;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background: #15803d;
+        }
+
+        .sub-header {
+            background: #f8fafc;
+            padding: 15px 30px;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .sub-header h2 {
+            color: #0f2c59;
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .content-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px 40px;
+        }
+
+        .page-heading {
+            text-align: center;
+            font-size: 19px;
+            color: #222222;
+            margin: 25px 0;
+        }
+
+        .section-heading {
+            color: #0f2c59;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 24px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+
+        ol, ul {
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        ol {
+            padding-left: 25px;
+        }
+
+        ol li, ul li {
+            margin-bottom: 8px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 16px 0 22px;
+        }
+
+        .detail-card {
+            border: 1px solid #dbe3ee;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .detail-label {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            display: block;
+            color: #0f2c59;
+            font-size: 20px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .status-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        .symbol-box {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 22px;
+            height: 22px;
+            vertical-align: middle;
+            margin-right: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 2px;
+            color: white;
+        }
+
+        .s-not-visited {
+            background: #e2e8f0;
+            color: #333333;
+            border: 1px solid #cbd5e1;
+        }
+
+        .s-not-answered {
+            background: #ea580c;
+        }
+
+        .s-answered {
+            background: #16a34a;
+        }
+
+        .s-review, .s-review-ans {
+            background: #6366f1;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+        }
+
+        .marking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px;
+            font-size: 14px;
+        }
+
+        .marking-table th,
+        .marking-table td {
+            border: 1px solid #dbe3ee;
+            padding: 11px 12px;
+            text-align: left;
+        }
+
+        .marking-table th {
+            background: #f1f5f9;
+            color: #0f2c59;
+        }
+
+        .positive {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .negative {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .warning-text {
+            color: #b91c1c;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 6px;
+            padding: 13px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 25px 0;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-row input {
+            margin-top: 5px;
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: #16a34a;
+        }
+
+        .checkbox-row label {
+            cursor: pointer;
+        }
+
+        .btn-proceed {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 13px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            transition: background 0.2s ease;
+        }
+
+        .btn-proceed:hover:not(:disabled) {
+            background: #15803d;
+        }
+
+        .btn-proceed:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            .brand-logo {
+                font-size: 20px;
+            }
+
+            .header-title {
+                font-size: 15px;
+                margin-left: 10px;
+            }
+
+            .home-btn {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .sub-header {
+                padding: 15px;
+            }
+
+            .sub-header h2 {
+                font-size: 18px;
+            }
+
+            .content-container {
+                padding: 0 15px 30px;
+                margin-top: 15px;
+            }
+
+            .page-heading {
+                font-size: 17px;
+            }
+
+            ol, ul {
+                font-size: 13px;
+            }
+
+            .details-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .detail-card {
+                padding: 11px;
+            }
+
+            .detail-value {
+                font-size: 17px;
+            }
+
+            .marking-table {
+                font-size: 13px;
+            }
+
+            .marking-table th,
+            .marking-table td {
+                padding: 9px 7px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .header-title {
+                font-size: 12px;
+                margin-left: 7px;
+            }
+
+            .brand-logo {
+                font-size: 18px;
+            }
+
+            .home-btn {
+                font-size: 11px;
+                padding: 7px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% set selected_exam = exam_type | default('NEET', true) %}
+{% set raw_paper = paper | default('Full Exam', true) %}
+{% set paper_key = raw_paper | string | lower | trim %}
+
+{# Display friendly paper names even if the backend sends canonical names. #}
+{% if paper_key in ['physics', 'physics only'] %}
+    {% set selected_paper = 'Physics Only' %}
+{% elif paper_key in ['chemistry', 'chemistry only'] %}
+    {% set selected_paper = 'Chemistry Only' %}
+{% elif paper_key in ['biology', 'biology only'] %}
+    {% set selected_paper = 'Biology Only' %}
+{% else %}
+    {% set selected_paper = 'Full Exam' %}
+{% endif %}
+
+{% set question_count = total_questions | default(0, true) | int %}
+{% set maximum_marks = max_marks | default(0, true) | int %}
+{% set seconds = time_seconds | default(0, true) | int %}
+{% set correct_marks = marks_correct | default(4, true) | int %}
+{% set incorrect_marks = marks_incorrect | default(-1, true) | int %}
+{% set unanswered_marks = marks_unanswered | default(0, true) | int %}
+
+<header>
+    <div class="brand">
+        <span class="brand-logo">NTA</span>
+        <span class="header-title">National Testing Agency</span>
+    </div>
+
+    <a href="{{ url_for('home') }}" class="home-btn">🏠 Home</a>
+</header>
+
+<div class="sub-header">
+    <h2>GENERAL INSTRUCTIONS</h2>
+</div>
+
+<main class="content-container">
+
+    <h3 class="page-heading">
+        Please read the instructions carefully
+    </h3>
+
+    <div class="section-heading">Examination Details:</div>
+
+    <div class="details-grid">
+        <div class="detail-card">
+            <span class="detail-label">Selected Exam</span>
+            <span class="detail-value">{{ selected_exam }}</span>
+        </div>
+
+        <div class="detail-card">
+            <span class="detail-label">Selected Paper</span>
+            <span class="detail-value">{{ selected_paper }}</span>
+        </div>
+
+        <div class="detail-card">
+            <span class="detail-label">Number of Questions</span>
+            <span class="detail-value">{{ question_count }}</span>
+        </div>
+
+        <div class="detail-card">
+            <span class="detail-label">Maximum Marks</span>
+            <span class="detail-value">{{ maximum_marks }}</span>
+        </div>
+
+        <div class="detail-card">
+            <span class="detail-label">Examination Duration</span>
+            <span class="detail-value">
+                {% if seconds >= 3600 %}
+                    {{ seconds // 3600 }} hour{% if seconds // 3600 != 1 %}s{% endif %}
+                    {% if (seconds % 3600) > 0 %}
+                        {{ (seconds % 3600) // 60 }} minutes
+                    {% endif %}
+                {% elif seconds > 0 %}
+                    {{ seconds // 60 }} minutes
+                {% else %}
+                    Not specified
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="section-heading">Marking Scheme:</div>
+
+    <table class="marking-table">
+        <thead>
+            <tr>
+                <th>Response</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Correct answer</td>
+                <td class="positive">+{{ correct_marks }}</td>
+            </tr>
+
+            <tr>
+                <td>Incorrect answer</td>
+                <td class="negative">{{ incorrect_marks }}</td>
+            </tr>
+
+            <tr>
+                <td>Unanswered question</td>
+                <td>{{ unanswered_marks }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="section-heading">General Instructions:</div>
+
+    <ol>
+        <li>
+            The countdown timer displays the remaining examination time.
+            When it reaches zero, the test should end automatically.
+        </li>
+
+        <li>
+            The Question Palette displays the status of each question.
+            <ul class="status-list">
+                <li>
+                    <span class="symbol-box s-not-visited">0</span>
+                    You have not visited the question yet.
+                </li>
+                <li>
+                    <span class="symbol-box s-not-answered">0</span>
+                    You have visited the question but have not answered it.
+                </li>
+                <li>
+                    <span class="symbol-box s-answered">0</span>
+                    You have answered the question.
+                </li>
+                <li>
+                    <span class="symbol-box s-review">0</span>
+                    You have not answered the question but marked it for review.
+                </li>
+                <li>
+                    <span class="symbol-box s-review-ans">0</span>
+                    You answered the question and marked it for review.
+                </li>
+            </ul>
+        </li>
+
+        <li>Read each question carefully before choosing an option.</li>
+
+        <li>Select one option for each multiple-choice question.</li>
+
+        <li>
+            Use <b>Save &amp; Next</b> to save your answer and move
+            to the next question.
+        </li>
+
+        <li>
+            Use <b>Clear Response</b> to remove a selected answer,
+            if the exam interface provides this control.
+        </li>
+
+        <li>
+            Correct answers receive +{{ correct_marks }} marks,
+            incorrect answers receive {{ incorrect_marks }} marks,
+            and unanswered questions receive {{ unanswered_marks }} marks.
+        </li>
+
+        <li>Review your answers before submitting the test.</li>
+    </ol>
+
+    <div class="warning-text">
+        <b>Mock test notice:</b>
+        This application uses the questions currently available in its
+        database. The total questions and maximum marks depend on the
+        selected paper and the configured marking scheme.
+    </div>
+
+    <form
+        action="{{ url_for('exam') }}"
+        method="POST"
+        id="instructionsForm"
+    >
+        {# Send the original exam name and canonical paper to Flask. #}
+        <input
+            type="hidden"
+            name="exam"
+            value="{{ selected_exam }}"
+        >
+
+        <input
+            type="hidden"
+            name="paper"
+            value="{% if paper_key in ['physics', 'physics only'] %}Physics{% elif paper_key in ['chemistry', 'chemistry only'] %}Chemistry{% elif paper_key in ['biology', 'biology only'] %}Biology{% else %}Full Exam{% endif %}"
+        >
+
+        <div class="checkbox-row">
+            <input
+                type="checkbox"
+                id="accept_check"
+                name="accept_instructions"
+                value="yes"
+                required
+            >
+
+            <label for="accept_check">
+                I have read and understood the instructions.
+                I confirm that I am ready to begin this mock test.
+            </label>
+        </div>
+
+        <button
+            type="submit"
+            id="proceed_btn"
+            class="btn-proceed"
+            disabled
+        >
+            PROCEED
+        </button>
+    </form>
+
+</main>
+
+<script>
+    const checkbox = document.getElementById("accept_check");
+    const proceedButton = document.getElementById("proceed_btn");
+    const form = document.getElementById("instructionsForm");
+
+    function toggleButton() {
+        proceedButton.disabled = !checkbox.checked;
+    }
+
+    checkbox.addEventListener("change", toggleButton);
+
+    form.addEventListener("submit", function(event) {
+        if (!checkbox.checked) {
+            event.preventDefault();
+            checkbox.focus();
+            toggleButton();
+        }
+    });
+
+    toggleButton();
+</script>
+
+</body>
+</html>

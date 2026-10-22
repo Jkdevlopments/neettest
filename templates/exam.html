@@ -1,0 +1,1087 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Mock Test - Online Exam</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #333;
+        }
+
+        button, select, input { font: inherit; }
+
+        button:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 3px solid #38bdf8;
+            outline-offset: 2px;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            background: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #0f2c59;
+            gap: 15px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .candidate-photo {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+            background: #cbd5e1;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 5px 10px;
+        }
+
+        .info-grid span:nth-child(odd) {
+            font-weight: bold;
+            color: #475569;
+        }
+
+        .timer-box {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-box.warning {
+            background: #dc2626;
+            animation: timerPulse 1s infinite;
+        }
+
+        @keyframes timerPulse {
+            50% { opacity: .7; }
+        }
+
+        #languageSelect {
+            padding: 7px 10px;
+            border-radius: 20px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            font-weight: bold;
+        }
+
+        .workspace {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .question-area {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            background: white;
+            padding: 14px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            scrollbar-gutter: stable;
+            border-right: 2px solid #cbd5e1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #examForm {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            min-height: 100%;
+        }
+
+        #question-container {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .question-slide { min-width: 0; }
+
+        .q-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0f2c59;
+            margin-bottom: 8px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scroll-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .scroll-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0;
+        }
+
+        .scroll-btn:hover { background: #1d4ed8; }
+
+        .q-text {
+            font-size: 15px;
+            line-height: 1.55;
+            margin: 0 0 8px;
+            padding: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .q-text b {
+            display: block;
+            margin: 0 0 5px;
+        }
+
+        /* Google Drive images are served through the Flask backend. */
+        .question-image {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 65vh;
+            object-fit: contain;
+            object-position: left top;
+            margin: 0 0 8px;
+        }
+
+        .image-error {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px;
+            margin: 0 0 8px;
+            border-radius: 5px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+            margin: 8px 0 14px;
+        }
+
+        .option-label {
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background .2s, border-color .2s;
+        }
+
+        .option-label:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .option-label:has(input:checked) {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+
+        .option-label input {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: #2563eb;
+        }
+
+        .option-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0f2c59;
+            flex-shrink: 0;
+        }
+
+        .option-text { overflow-wrap: anywhere; }
+
+        .action-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-save-next { background: #16a34a; }
+        .btn-review-next { background: #f97316; }
+        .btn-mark-review { background: #1d4ed8; }
+
+        .btn-action:hover, .btn-submit-exam:hover {
+            filter: brightness(.94);
+        }
+
+        .navigation-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 10px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-nav {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 8px 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        .btn-submit-exam {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .palette-area {
+            width: 340px;
+            flex-shrink: 0;
+            min-height: 0;
+            background: #f8fafc;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow: hidden;
+        }
+
+        .legend-box {
+            background: white;
+            border: 2px dashed #94a3b8;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
+            color: white;
+        }
+
+        .b-not-visited { background: #cbd5e1; color: #333; }
+        .b-not-answered { background: #ea580c; }
+        .b-answered { background: #16a34a; }
+        .b-review { background: #6366f1; border-radius: 50%; }
+        .b-review-answered { background: #7c3aed; border-radius: 50%; }
+
+        .palette-grid {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            border-radius: 4px;
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 7px;
+            align-content: start;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .grid-num {
+            aspect-ratio: 1;
+            min-width: 0;
+            background: #cbd5e1;
+            color: #333;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .grid-num.not-answered {
+            background: #ea580c;
+            color: white;
+            border-color: #ea580c;
+        }
+
+        .grid-num.answered {
+            background: #16a34a;
+            color: white;
+            border-color: #16a34a;
+        }
+
+        .grid-num.review {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+            border-radius: 50%;
+        }
+
+        .grid-num.review-answered {
+            background: #7c3aed;
+            color: white;
+            border-color: #7c3aed;
+            border-radius: 50%;
+        }
+
+        .grid-num.current {
+            outline: 3px solid #0f2c59;
+            outline-offset: -3px;
+        }
+
+        @media (max-width: 850px) {
+            .top-bar { padding: 8px 12px; gap: 8px; }
+            .candidate-info { gap: 10px; }
+
+            .workspace {
+                flex-direction: column;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            .question-area {
+                flex: 1;
+                min-height: 0;
+                border-right: none;
+                border-bottom: 2px solid #cbd5e1;
+                padding: 12px;
+            }
+
+            .palette-area {
+                width: 100%;
+                height: 180px;
+                flex-shrink: 0;
+                padding: 8px;
+                gap: 8px;
+            }
+
+            .legend-box {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 5px;
+                padding: 7px;
+                font-size: 10px;
+            }
+
+            .legend-item { gap: 5px; min-width: 0; }
+
+            .badge {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+            }
+
+            .palette-grid {
+                flex: 1;
+                grid-template-columns: repeat(10, minmax(0, 1fr));
+                gap: 4px;
+                padding: 6px;
+            }
+
+            .grid-num { font-size: 11px; aspect-ratio: 1.2; }
+            .question-image { max-height: 40vh; }
+        }
+
+        @media (max-width: 500px) {
+            .top-bar { padding: 7px; }
+            .candidate-info { gap: 7px; font-size: 10px; }
+
+            .candidate-photo {
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+
+            .info-grid {
+                gap: 3px 5px;
+                grid-template-columns: auto auto;
+            }
+
+            #languageSelect {
+                padding: 5px 7px;
+                font-size: 11px;
+            }
+
+            .question-area { padding: 10px; }
+
+            .q-title {
+                font-size: 14px;
+                margin-bottom: 6px;
+                padding-bottom: 5px;
+            }
+
+            .q-text {
+                font-size: 14px;
+                line-height: 1.45;
+                margin-bottom: 6px;
+            }
+
+            .question-image {
+                max-height: 34vh;
+                margin-bottom: 6px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 7px;
+                margin-top: 6px;
+                margin-bottom: 10px;
+            }
+
+            .option-label { min-height: 42px; padding: 7px 9px; }
+
+            .action-bar { gap: 5px; margin-top: 8px; }
+
+            .btn-action {
+                padding: 8px 7px;
+                font-size: 9px;
+            }
+
+            .navigation-footer {
+                margin-top: 8px;
+                padding-top: 8px;
+            }
+
+            .btn-nav {
+                padding: 7px;
+                font-size: 11px;
+                margin-right: 2px;
+            }
+
+            .btn-submit-exam {
+                padding: 8px 12px;
+                font-size: 11px;
+            }
+
+            .palette-area {
+                height: 160px;
+                padding: 6px;
+            }
+
+            .legend-box {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                font-size: 9px;
+            }
+
+            .palette-grid {
+                grid-template-columns: repeat(7, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="top-bar">
+    <div class="candidate-info">
+        <div class="candidate-photo" aria-hidden="true">👤</div>
+
+        <div class="info-grid">
+            <span>Candidate Name:</span>
+            <span>{{ candidate_name|default('Candidate') }}</span>
+
+            <span>Exam Name:</span>
+            <span>{{ exam_type|default(exam|default('NEET Mock Test')) }}</span>
+
+            <span>Subject Name:</span>
+            <span style="color:#ea580c;">
+                {{ paper|default('Full Exam') }}
+            </span>
+
+            <span>Remaining Time:</span>
+            <span class="timer-box" id="timer">00:00:00</span>
+        </div>
+    </div>
+
+    <select id="languageSelect" aria-label="Language">
+        <option value="English">English</option>
+        <option value="Tamil">Tamil</option>
+    </select>
+</header>
+
+<div class="workspace">
+
+    <main class="question-area">
+        <form action="{{ url_for('submit') }}"
+              method="POST"
+              id="examForm">
+
+            <div id="question-container">
+
+                {% for q in questions %}
+                {% set question_index = loop.index0 %}
+
+                <section
+                    class="question-slide"
+                    id="slide-{{ question_index }}"
+                    data-question-id="{{ q.id }}"
+                    style="display:{% if loop.first %}block{% else %}none{% endif %};">
+
+                    <div class="q-title">
+                        <span>Question {{ loop.index }}:</span>
+
+                        <div class="scroll-btns">
+                            <button type="button"
+                                    class="scroll-btn"
+                                    onclick="scrollQuestion(-150)"
+                                    aria-label="Scroll up">↑</button>
+
+                            <button type="button"
+                                    class="scroll-btn"
+                                    onclick="scrollQuestion(150)"
+                                    aria-label="Scroll down">↓</button>
+                        </div>
+                    </div>
+
+                    <div class="q-text">
+
+                        {% if q.type == "image" and (q.image or q.image_drive_id) %}
+
+                            {% if q.image_drive_id %}
+                                <!-- Image retrieved securely through Flask -->
+                                <img
+                                    src="{{ url_for('question_image', question_id=q.id) }}"
+                                    alt="Question {{ loop.index }}"
+                                    class="question-image"
+                                    {% if loop.first %}
+                                        loading="eager"
+                                        fetchpriority="high"
+                                    {% else %}
+                                        loading="lazy"
+                                    {% endif %}
+                                    decoding="async"
+                                    onerror="handleImageError(this)">
+                            {% else %}
+                                <!-- Backward compatibility with local images -->
+                                <img
+                                    src="{{ url_for('static', filename=q.image) }}"
+                                    alt="Question {{ loop.index }}"
+                                    class="question-image"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onerror="handleImageError(this)">
+                            {% endif %}
+
+                            <div class="image-error" role="alert">
+                                Question image could not be loaded.
+                                Please check the image file and try again.
+                            </div>
+
+                            {% if q.question %}
+                                <div>{{ q.question }}</div>
+                            {% endif %}
+
+                        {% else %}
+                            <b>{{ q.question }}</b>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="options-grid">
+                        {% for option in q.options %}
+                        {% set option_number = loop.index %}
+
+                        <label class="option-label">
+                            <input
+                                type="radio"
+                                name="answer_{{ q.id }}"
+                                value="{{ option_number if q.type == 'image' else option }}"
+                                onchange="markAnswered({{ question_index }})">
+
+                            <span class="option-number">
+                                ({{ option_number }})
+                            </span>
+
+                            {% if q.type != 'image' %}
+                                <span class="option-text">{{ option }}</span>
+                            {% endif %}
+                        </label>
+
+                        {% endfor %}
+                    </div>
+
+                </section>
+                {% endfor %}
+
+            </div>
+
+            <div class="action-bar">
+                <button type="button"
+                        class="btn-action btn-save-next"
+                        onclick="saveAndNext()">
+                    SAVE &amp; NEXT
+                </button>
+
+                <button type="button"
+                        class="btn-action btn-review-next"
+                        onclick="saveAndMarkReview()">
+                    SAVE &amp; MARK FOR REVIEW
+                </button>
+
+                <button type="button"
+                        class="btn-action btn-mark-review"
+                        onclick="markReviewAndNext()">
+                    MARK FOR REVIEW &amp; NEXT
+                </button>
+            </div>
+
+            <div class="navigation-footer">
+                <div>
+                    <button type="button"
+                            class="btn-nav"
+                            onclick="prevQuestion()">
+                        &lt;&lt; BACK
+                    </button>
+
+                    <button type="button"
+                            class="btn-nav"
+                            onclick="nextQuestion()">
+                        NEXT &gt;&gt;
+                    </button>
+                </div>
+
+                <button type="button"
+                        class="btn-submit-exam"
+                        onclick="confirmSubmit()">
+                    SUBMIT
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <aside class="palette-area">
+
+        <div class="legend-box">
+            <div class="legend-item">
+                <div class="badge b-not-visited" id="count-not-visited">0</div>
+                <span>Not Visited</span>
+            </div>
+
+            <div class="legend-item">
+                <div class="badge b-not-answered" id="count-not-answered">0</div>
+                <span>Not Answered</span>
+            </div>
+
+            <div class="legend-item">
+                <div class="badge b-answered" id="count-answered">0</div>
+                <span>Answered</span>
+            </div>
+
+            <div class="legend-item">
+                <div class="badge b-review" id="count-review">0</div>
+                <span>Marked for Review</span>
+            </div>
+
+            <div class="legend-item">
+                <div class="badge b-review-answered" id="count-review-answered">0</div>
+                <span>Answered &amp; Marked for Review</span>
+            </div>
+        </div>
+
+        <div class="palette-grid" id="paletteGrid">
+            {% for q in questions %}
+            <button type="button"
+                    class="grid-num"
+                    id="grid-{{ loop.index0 }}"
+                    onclick="jumpToQuestion({{ loop.index0 }})"
+                    aria-label="Go to question {{ loop.index }}">
+                {{ loop.index }}
+            </button>
+            {% endfor %}
+        </div>
+
+    </aside>
+</div>
+
+<script>
+"use strict";
+
+let currentIdx = 0;
+
+const totalQuestions = {{ questions|length }};
+const visitedQuestions = new Set();
+const reviewQuestions = new Set();
+
+const serverDuration = Number({{ duration|default(180)|int }});
+
+const durationMinutes =
+    Number.isFinite(serverDuration) && serverDuration > 0
+        ? serverDuration
+        : 180;
+
+let timeLeft = durationMinutes * 60;
+let timerInterval = null;
+let examSubmitted = false;
+
+function getSelectedAnswer(index) {
+    const slide = document.getElementById("slide-" + index);
+
+    if (!slide) return null;
+
+    return slide.querySelector('input[type="radio"]:checked');
+}
+
+function showQuestion(index) {
+    if (index < 0 || index >= totalQuestions || examSubmitted) {
+        return;
+    }
+
+    document.querySelectorAll(".question-slide").forEach((slide, i) => {
+        slide.style.display = i === index ? "block" : "none";
+    });
+
+    currentIdx = index;
+    visitedQuestions.add(index);
+
+    document.querySelectorAll(".grid-num").forEach(button => {
+        button.classList.remove("current");
+    });
+
+    const currentButton = document.getElementById("grid-" + index);
+
+    if (currentButton) {
+        currentButton.classList.add("current");
+    }
+
+    updateCounts();
+
+    const questionArea = document.querySelector(".question-area");
+
+    if (questionArea) {
+        questionArea.scrollTop = 0;
+    }
+}
+
+function updateCounts() {
+    let notVisited = 0;
+    let notAnswered = 0;
+    let answered = 0;
+    let review = 0;
+    let reviewAnswered = 0;
+
+    for (let i = 0; i < totalQuestions; i++) {
+        const button = document.getElementById("grid-" + i);
+
+        if (!button) continue;
+
+        const hasAnswer = getSelectedAnswer(i) !== null;
+        const isReview = reviewQuestions.has(i);
+
+        button.classList.remove(
+            "not-answered",
+            "answered",
+            "review",
+            "review-answered"
+        );
+
+        if (isReview && hasAnswer) {
+            reviewAnswered++;
+            button.classList.add("review-answered");
+        } else if (isReview) {
+            review++;
+            button.classList.add("review");
+        } else if (hasAnswer) {
+            answered++;
+            button.classList.add("answered");
+        } else if (visitedQuestions.has(i)) {
+            notAnswered++;
+            button.classList.add("not-answered");
+        } else {
+            notVisited++;
+        }
+    }
+
+    document.getElementById("count-not-visited").textContent = notVisited;
+    document.getElementById("count-not-answered").textContent = notAnswered;
+    document.getElementById("count-answered").textContent = answered;
+    document.getElementById("count-review").textContent = review;
+    document.getElementById("count-review-answered").textContent =
+        reviewAnswered;
+}
+
+function markAnswered(index) {
+    visitedQuestions.add(index);
+    updateCounts();
+}
+
+function saveAndNext() {
+    if (examSubmitted) return;
+
+    reviewQuestions.delete(currentIdx);
+    updateCounts();
+
+    if (currentIdx < totalQuestions - 1) {
+        showQuestion(currentIdx + 1);
+    }
+}
+
+function saveAndMarkReview() {
+    if (examSubmitted) return;
+
+    reviewQuestions.add(currentIdx);
+    updateCounts();
+
+    if (currentIdx < totalQuestions - 1) {
+        showQuestion(currentIdx + 1);
+    }
+}
+
+function markReviewAndNext() {
+    if (examSubmitted) return;
+
+    reviewQuestions.add(currentIdx);
+    updateCounts();
+
+    if (currentIdx < totalQuestions - 1) {
+        showQuestion(currentIdx + 1);
+    }
+}
+
+function nextQuestion() {
+    if (currentIdx < totalQuestions - 1) {
+        showQuestion(currentIdx + 1);
+    }
+}
+
+function prevQuestion() {
+    if (currentIdx > 0) {
+        showQuestion(currentIdx - 1);
+    }
+}
+
+function jumpToQuestion(index) {
+    showQuestion(index);
+}
+
+function scrollQuestion(amount) {
+    const questionArea = document.querySelector(".question-area");
+
+    if (questionArea) {
+        questionArea.scrollBy({
+            top: amount,
+            behavior: "smooth"
+        });
+    }
+}
+
+function handleImageError(imageElement) {
+    imageElement.style.display = "none";
+
+    const errorMessage = imageElement.nextElementSibling;
+
+    if (errorMessage &&
+        errorMessage.classList.contains("image-error")) {
+        errorMessage.style.display = "block";
+    }
+}
+
+function formatTime(seconds) {
+    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+
+    return `${hrs}:${mins}:${secs}`;
+}
+
+function submitExamAutomatically() {
+    if (examSubmitted) return;
+
+    examSubmitted = true;
+
+    if (timerInterval !== null) {
+        clearInterval(timerInterval);
+    }
+
+    const form = document.getElementById("examForm");
+
+    if (form) {
+        form.submit();
+    }
+}
+
+function confirmSubmit() {
+    if (examSubmitted) return;
+
+    let answeredCount = 0;
+
+    for (let i = 0; i < totalQuestions; i++) {
+        if (getSelectedAnswer(i) !== null) {
+            answeredCount++;
+        }
+    }
+
+    const unansweredCount = totalQuestions - answeredCount;
+
+    const message =
+        "Are you sure you want to submit the exam?\n\n" +
+        "Answered: " + answeredCount + "\n" +
+        "Unanswered: " + unansweredCount;
+
+    if (window.confirm(message)) {
+        submitExamAutomatically();
+    }
+}
+
+function startTimer() {
+    const timerElement = document.getElementById("timer");
+
+    timerElement.textContent = formatTime(timeLeft);
+
+    if (timeLeft <= 300) {
+        timerElement.classList.add("warning");
+    }
+
+    if (timeLeft <= 0) {
+        submitExamAutomatically();
+        return;
+    }
+
+    timerInterval = setInterval(() => {
+        if (examSubmitted) {
+            clearInterval(timerInterval);
+            return;
+        }
+
+        timeLeft = Math.max(0, timeLeft - 1);
+        timerElement.textContent = formatTime(timeLeft);
+
+        if (timeLeft <= 300) {
+            timerElement.classList.add("warning");
+        }
+
+        if (timeLeft <= 0) {
+            submitExamAutomatically();
+        }
+    }, 1000);
+}
+
+document.getElementById("examForm").addEventListener("submit", function () {
+    examSubmitted = true;
+
+    if (timerInterval !== null) {
+        clearInterval(timerInterval);
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.target.matches("input, textarea, select")
+    ) {
+        return;
+    }
+
+    if (event.key === "ArrowRight") {
+        nextQuestion();
+    } else if (event.key === "ArrowLeft") {
+        prevQuestion();
+    }
+});
+
+if (totalQuestions > 0) {
+    showQuestion(0);
+} else {
+    document.getElementById("question-container").textContent =
+        "No questions are available.";
+}
+
+updateCounts();
+startTimer();
+</script>
+
+</body>
+</html>

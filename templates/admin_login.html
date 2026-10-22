@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Admin Login | NEET Question Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #0f2c59;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .card {
+            width: min(400px, 100%);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #0f2c59;
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 7px;
+            color: #334155;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            background: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 24px;
+            border: 0;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 3px;
+        }
+
+        .message {
+            padding: 11px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .error {
+            color: #991b1b;
+            background: #fee2e2;
+        }
+
+        .success {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .info {
+            color: #1e40af;
+            background: #dbeafe;
+        }
+
+        .footer {
+            margin-top: 20px;
+            color: #94a3b8;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media (max-width: 420px) {
+            .card {
+                padding: 24px 20px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+
+        <h1>Admin Login</h1>
+
+        <p class="subtitle">
+            NEET Question Management
+        </p>
+
+        <!-- Flask flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <p class="message {{ category }}" role="alert">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endwith %}
+
+        <!-- Firebase Email/Password login -->
+        <form
+            action="{{ url_for('admin_login') }}"
+            method="POST"
+            autocomplete="off"
+        >
+            <label for="email">
+                Admin Email
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter your admin email"
+                autocomplete="off"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+            >
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="new-password"
+                required
+            >
+
+            <button type="submit">
+                Sign In
+            </button>
+        </form>
+
+        <div class="footer">
+            Secure Admin Access
+        </div>
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,614 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NATIONAL ELIGIBILITY CUM ENTRANCE TEST (UG) - Score Card</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            margin: 0;
+            padding: 20px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .scorecard-container {
+            max-width: 840px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 2px solid #1e3a8a;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .scorecard-container {
+                border: 1px solid #000;
+                box-shadow: none;
+                width: 100%;
+                max-width: none;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+
+            .scorecard-container {
+                padding: 10px;
+            }
+
+            .candidate-table {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Dynamic result values from Flask -->
+    {% set final_score = score | default(0, true) | float %}
+    {% set total_questions = total | default(0, true) | int %}
+    {% set max_score = maximum_score | default(total_questions * 4, true) | float %}
+    {% set correct_count = correct | default(0, true) | int %}
+    {% set incorrect_count = incorrect | default(0, true) | int %}
+    {% set unanswered_count = unanswered | default(0, true) | int %}
+
+    {% if max_score <= 0 %}
+        {% set max_score = 720 %}
+    {% endif %}
+
+    {% set selected_exam = exam_type | default(exam, true) | default('NATIONAL ELIGIBILITY CUM ENTRANCE TEST (UG)', true) %}
+    {% set selected_paper = paper | default('Full Syllabus Mock Test', true) %}
+
+    <!-- Normalize exam and paper names -->
+    {% set test_type = (selected_paper | string | lower | replace('_', ' ') | replace('-', ' ')) %}
+    {% set exam_name = (selected_exam | string | lower | replace('_', ' ') | replace('-', ' ')) %}
+    {% set test_key = test_type ~ ' ' ~ exam_name %}
+
+    <!-- Identify subject-only test -->
+    {% set is_physics = ('physics' in test_key) and ('chemistry' not in test_key) and ('biology' not in test_key) and ('full syllabus' not in test_key) %}
+    {% set is_chemistry = ('chemistry' in test_key) and ('physics' not in test_key) and ('biology' not in test_key) and ('full syllabus' not in test_key) %}
+    {% set is_biology = ('biology' in test_key) and ('physics' not in test_key) and ('chemistry' not in test_key) and ('full syllabus' not in test_key) %}
+
+    {% set is_single_subject = is_physics or is_chemistry or is_biology %}
+
+    <!-- Candidate details -->
+    {% set candidate_name = 'ANUSHA R' %}
+    {% set mother_name = 'PARAMESWARI' %}
+    {% set father_name = 'RAMAR' %}
+    {% set roll_number = '170100574' %}
+    {% set app_no = '190410068271' %}
+    {% set dob = '05/08/2009' %}
+    {% set gender = 'Female' %}
+    {% set category = 'SC' %}
+    {% set category_ph_rank = '----' %}
+
+    <!-- Calculate percentage safely -->
+    {% if max_score > 0 %}
+        {% set raw_percentage = (final_score / max_score) * 100 %}
+        {% set score_percentage = [[raw_percentage, 0] | max, 100] | min | round(2) %}
+    {% else %}
+        {% set score_percentage = 0 %}
+    {% endif %}
+
+    <!-- Estimated ranks: sample mock participants -->
+    {% set total_participants = 600000 %}
+    {% set category_participants = 120000 %}
+
+    {% if score_percentage >= 100 %}
+        {% set air_rank = 1 %}
+        {% set category_rank = 1 %}
+    {% elif score_percentage <= 0 %}
+        {% set air_rank = total_participants %}
+        {% set category_rank = category_participants %}
+    {% else %}
+        {% set air_rank = (1 + ((100 - score_percentage) / 100 * (total_participants - 1))) | round(0, 'common') | int %}
+        {% set category_rank = (1 + ((100 - score_percentage) / 100 * (category_participants - 1))) | round(0, 'common') | int %}
+    {% endif %}
+
+    <div class="scorecard-container">
+
+        <!-- Action buttons -->
+        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-blue-700 no-print">
+            <button
+                type="button"
+                onclick="window.print()"
+                class="hover:underline flex items-center gap-1 cursor-pointer"
+            >
+                <span>🖨️</span> Click Here to Print This Page
+            </button>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700 transition"
+            >
+                Back to Home
+            </a>
+        </div>
+
+        <!-- Header -->
+        <header class="flex flex-col sm:flex-row justify-between items-center border-b-2 border-blue-900 pb-4 mb-4 gap-4">
+
+            <div class="flex items-center gap-3 text-center sm:text-left">
+                <div class="w-14 h-14 flex items-center justify-center bg-gray-100 rounded border border-gray-300 overflow-hidden">
+                    <svg viewBox="0 0 100 100" class="w-12 h-12 text-blue-900 fill-current">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="4"/>
+                        <text x="50" y="55" font-size="12" text-anchor="middle" font-weight="bold">INDIA</text>
+                    </svg>
+                </div>
+
+                <div>
+                    <div class="text-[11px] font-bold tracking-wider text-gray-700 uppercase">
+                        Government of India
+                    </div>
+                    <div class="text-xs font-extrabold text-blue-900 uppercase">
+                        Ministry of Education
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <h1 class="text-base sm:text-lg font-black text-blue-950 uppercase tracking-wide">
+    NATIONAL ELIGIBILITY CUM ENTRANCE TEST (UG)
+</h1>
+
+                <h2 class="text-sm font-bold text-gray-800 tracking-wider mt-0.5">
+                    Score Card
+                </h2>
+
+                <p class="text-xs text-gray-600 mt-1">
+                    {{ selected_paper }}
+                </p>
+
+                <p class="text-[9px] font-bold text-orange-700 mt-1">
+                    MOCK TEST · NOT AN OFFICIAL NTA RESULT
+                </p>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <div class="text-right hidden sm:block">
+                    <div class="text-[10px] font-bold text-gray-500 uppercase">
+                        Excellence in Assessment
+                    </div>
+
+                    <div class="text-xs font-black text-orange-600">
+                        NATIONAL TESTING AGENCY
+                    </div>
+                </div>
+
+                <div class="w-14 h-14 bg-orange-500 rounded flex items-center justify-center text-white font-black text-xl shadow-inner">
+                    NTA
+                </div>
+            </div>
+        </header>
+
+        <!-- Candidate details -->
+        <table class="candidate-table w-full border-collapse border border-gray-400 text-xs mb-4">
+            <tbody>
+                <tr class="border-b border-gray-400">
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold w-1/6 text-gray-700">
+                        Roll Number
+                    </td>
+
+                    <td class="border-r border-gray-400 p-1.5 font-bold text-blue-950 w-2/6">
+                        {{ roll_number }}
+                    </td>
+
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold w-1/6 text-gray-700">
+                        Application No.
+                    </td>
+
+                    <td class="border-r border-gray-400 p-1.5 font-bold text-blue-950 w-1/6">
+                        {{ app_no }}
+                    </td>
+
+                    <!-- Candidate photo: QR code removed -->
+                    <td rowspan="4" class="p-1 text-center bg-gray-50 align-middle w-1/6">
+                        <div class="w-20 h-24 mx-auto border border-gray-400 bg-white flex items-center justify-center overflow-hidden shadow-sm">
+
+                            <img
+                                src="{{ url_for('static', filename='image/photo.jpeg') }}"
+                                alt="Candidate Photo"
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+
+                            <div class="hidden w-full h-full flex-col items-center justify-center text-[10px] text-gray-500">
+                                <svg
+                                    class="w-10 h-10 text-gray-400 mb-1"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                        clip-rule="evenodd"
+                                    ></path>
+                                </svg>
+
+                                <span>Photo unavailable</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="border-b border-gray-400">
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold text-gray-700">
+                        Candidate's Name
+                    </td>
+
+                    <td colspan="3" class="border-r border-gray-400 p-1.5 font-bold text-blue-950 uppercase">
+                        {{ candidate_name }}
+                    </td>
+                </tr>
+
+                <tr class="border-b border-gray-400">
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold text-gray-700">
+                        Mother's Name
+                    </td>
+
+                    <td colspan="3" class="border-r border-gray-400 p-1.5 font-bold text-blue-950 uppercase">
+                        {{ mother_name }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold text-gray-700">
+                        Father's Name
+                    </td>
+
+                    <td colspan="3" class="border-r border-gray-400 p-1.5 font-bold text-blue-950 uppercase">
+                        {{ father_name }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Personal information -->
+        <table class="w-full border-collapse border border-gray-400 text-xs mb-4">
+            <tbody>
+                <tr class="border-b border-gray-400">
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold w-1/6 text-gray-700">
+                        Nationality
+                    </td>
+
+                    <td class="border-r border-gray-400 p-1.5 font-semibold w-2/6">
+                        Indian
+                    </td>
+
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold w-1/6 text-gray-700">
+                        Date of Birth
+                    </td>
+
+                    <td class="p-1.5 font-semibold w-2/6">
+                        {{ dob }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold text-gray-700">
+                        Gender
+                    </td>
+
+                    <td class="border-r border-gray-400 p-1.5 font-semibold">
+                        {{ gender }}
+                    </td>
+
+                    <td class="border-r border-gray-400 bg-gray-100 p-1.5 font-bold text-gray-700">
+                        Category
+                    </td>
+
+                    <td class="p-1.5 font-semibold">
+                        {{ category }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Score and percentage -->
+        <table class="w-full border-collapse border border-gray-400 text-xs mb-4">
+            <thead>
+                <tr class="bg-gray-200 text-blue-950 border-b border-gray-400">
+                    <th class="border-r border-gray-400 p-2 text-left font-bold w-1/2">
+                        {% if is_physics %}
+                            Physics Percentage
+                        {% elif is_chemistry %}
+                            Chemistry Percentage
+                        {% elif is_biology %}
+                            Biology Percentage
+                        {% else %}
+                            Subject Percentage
+                        {% endif %}
+                    </th>
+
+                    <th class="p-2 text-left font-bold w-1/2">
+                        Total Marks Obtained (out of {{ max_score }})
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="border-b border-gray-400">
+                    <td class="border-r border-gray-400 p-0 align-top">
+                        <table class="w-full text-xs">
+
+                            {% if is_physics %}
+                                <tr>
+                                    <td class="p-2 text-gray-700">Physics</td>
+
+                                    <td class="p-2 text-right font-bold text-blue-900">
+                                        {{ "%.2f"|format(score_percentage|float) }}%
+                                    </td>
+                                </tr>
+
+                            {% elif is_chemistry %}
+                                <tr>
+                                    <td class="p-2 text-gray-700">Chemistry</td>
+
+                                    <td class="p-2 text-right font-semibold">-</td>
+                                </tr>
+
+                            {% elif is_biology %}
+                                <tr>
+                                    <td class="p-2 text-gray-700">
+                                        Biology (Botany &amp; Zoology)
+                                    </td>
+
+                                    <td class="p-2 text-right font-semibold">-</td>
+                                </tr>
+
+                            {% else %}
+                                <tr class="border-b border-gray-300">
+                                    <td class="p-1.5 text-gray-700">Physics</td>
+                                    <td class="p-1.5 text-right font-semibold">-</td>
+                                </tr>
+
+                                <tr class="border-b border-gray-300">
+                                    <td class="p-1.5 text-gray-700">Chemistry</td>
+                                    <td class="p-1.5 text-right font-semibold">-</td>
+                                </tr>
+
+                                <tr class="border-b border-gray-300">
+                                    <td class="p-1.5 text-gray-700">
+                                        Biology (Botany &amp; Zoology)
+                                    </td>
+
+                                    <td class="p-1.5 text-right font-semibold">-</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="p-1.5 font-bold text-gray-900">
+                                        Total Percentage
+                                    </td>
+
+                                    <td class="p-1.5 text-right font-bold text-blue-900">
+                                        {{ "%.2f"|format(score_percentage|float) }}%
+                                    </td>
+                                </tr>
+                            {% endif %}
+
+                        </table>
+                    </td>
+
+                    <td class="p-2 align-middle text-center bg-blue-50/50">
+                        <div class="text-2xl font-black text-blue-900">
+                            {{ final_score | int if final_score == final_score|int else final_score }}
+                        </div>
+
+                        <div class="text-xs text-gray-600">
+                            out of {{ max_score | int }} marks
+                        </div>
+
+                        <div class="text-[11px] font-bold text-gray-600 mt-2">
+                            Estimated All India Rank:
+                            <span class="text-red-600 font-extrabold">
+                                {{ "{:,}".format(air_rank) }}
+                            </span>
+                        </div>
+
+                        <div class="flex flex-wrap justify-center gap-2 mt-3 text-[11px]">
+                            <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded font-bold border border-green-300">
+                                ✓ Correct: {{ correct_count }}
+                            </span>
+
+                            <span class="bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold border border-red-300">
+                                ✗ Incorrect: {{ incorrect_count }}
+                            </span>
+
+                            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold border border-amber-300">
+                                ⊘ Unanswered: {{ unanswered_count }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Rank details -->
+        <div class="mb-4">
+            <div class="bg-blue-900 text-white text-[11px] font-bold px-2 py-1 uppercase tracking-wide border border-blue-900">
+                ALL INDIA QUOTA RANK (ESTIMATED MOCK DETAILS)
+            </div>
+
+            <table class="w-full border-collapse border border-gray-400 text-xs text-center">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-400 text-gray-700">
+                        <th class="border-r border-gray-400 p-1.5 font-semibold">
+                            Overall Rank
+                        </th>
+
+                        <th class="border-r border-gray-400 p-1.5 font-semibold">
+                            Category
+                        </th>
+
+                        <th class="border-r border-gray-400 p-1.5 font-semibold">
+                            Category Rank
+                        </th>
+
+                        <th class="p-1.5 font-semibold">
+                            Category-PH Rank
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="border-r border-gray-400 p-1.5 font-bold">
+                            {{ "{:,}".format(air_rank) }}
+                        </td>
+
+                        <td class="border-r border-gray-400 p-1.5 font-bold">
+                            {{ category }}
+                        </td>
+
+                        <td class="border-r border-gray-400 p-1.5 font-bold">
+                            {{ "{:,}".format(category_rank) }}
+                        </td>
+
+                        <td class="p-1.5 font-bold">
+                            {{ category_ph_rank }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Cutoff table -->
+        <div class="mb-4">
+            <div class="bg-blue-900 text-white text-[11px] font-bold px-2 py-1 uppercase tracking-wide border border-blue-900">
+                CUT-OFF PERCENTILE AND SCORE (REFERENCE)
+            </div>
+
+            <table class="w-full border-collapse border border-gray-400 text-[11px]">
+                <thead>
+                    <tr class="bg-gray-100 border-b border-gray-400 text-gray-700 text-center">
+                        <th class="border-r border-gray-400 p-1">Category</th>
+                        <th class="border-r border-gray-400 p-1">Cut off Percentile</th>
+                        <th class="border-r border-gray-400 p-1">Cut off Score</th>
+                        <th class="border-r border-gray-400 p-1">Candidates</th>
+                        <th class="border-r border-gray-400 p-1">Category</th>
+                        <th class="border-r border-gray-400 p-1">Cut off Percentile</th>
+                        <th class="border-r border-gray-400 p-1">Cut off Score</th>
+                        <th class="p-1">Candidates</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr class="border-b border-gray-300 text-center">
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">UR</td>
+                        <td class="border-r border-gray-400 p-1">50th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">701–134</td>
+                        <td class="border-r border-gray-400 p-1">704335</td>
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">UR-PH</td>
+                        <td class="border-r border-gray-400 p-1">45th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">133–120</td>
+                        <td class="p-1">266</td>
+                    </tr>
+
+                    <tr class="border-b border-gray-300 text-center">
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">OBC</td>
+                        <td class="border-r border-gray-400 p-1">40th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">133–107</td>
+                        <td class="border-r border-gray-400 p-1">64789</td>
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">OBC-PH</td>
+                        <td class="border-r border-gray-400 p-1">40th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">119–107</td>
+                        <td class="p-1">142</td>
+                    </tr>
+
+                    <tr class="border-b border-gray-300 text-center">
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">SC</td>
+                        <td class="border-r border-gray-400 p-1">40th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">133–107</td>
+                        <td class="border-r border-gray-400 p-1">20309</td>
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">SC-PH</td>
+                        <td class="border-r border-gray-400 p-1">40th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">119–107</td>
+                        <td class="p-1">32</td>
+                    </tr>
+
+                    <tr class="text-center">
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">ST</td>
+                        <td class="border-r border-gray-400 p-1">40th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">133–107</td>
+                        <td class="border-r border-gray-400 p-1">8455</td>
+                        <td class="border-r border-gray-400 p-1 font-semibold bg-gray-50">ST-PH</td>
+                        <td class="border-r border-gray-400 p-1">40th Percentile</td>
+                        <td class="border-r border-gray-400 p-1">119–107</td>
+                        <td class="p-1">14</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Important information -->
+        <div class="mb-4 text-[9px] text-gray-700 leading-tight border border-gray-300 p-2 bg-gray-50 rounded">
+            <div class="font-bold mb-1 text-blue-950 uppercase">
+                IMPORTANT INFORMATION
+            </div>
+
+            <ol class="list-decimal pl-4 space-y-1">
+                <li>
+                    Physics-only test percentage is calculated using marks obtained divided by maximum marks, multiplied by 100.
+                </li>
+
+                <li>
+                    Chemistry and Biology percentage values are displayed as - as configured in this mock scorecard.
+                </li>
+
+                <li>
+                    For Full Syllabus tests, subject-wise percentages are displayed as -; overall percentage is calculated from total marks.
+                </li>
+
+                <li>
+                    Ranks are simulated from percentage using a sample pool of 6,00,000 overall participants and 1,20,000 category participants. They are not actual exam ranks.
+                </li>
+
+                <li>
+                    This is a practice scorecard, not an official NTA result document.
+                </li>
+            </ol>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-between items-end text-[10px] font-bold text-gray-800 pt-2 border-t border-gray-400">
+            <div>MOCK TEST RESULT</div>
+
+            <div class="text-right">
+                <div class="mb-4"></div>
+                <div class="border-t border-gray-700 pt-1">
+                    Mock Test Portal
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

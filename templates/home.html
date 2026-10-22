@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NTA Mock Test - Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f2c59; margin: 0; padding: 0; color: #333; }
+        header { background: #ffffff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ff9933; }
+        .main-container { display: flex; justify-content: center; align-items: center; padding: 40px 20px; gap: 30px; flex-wrap: wrap; }
+        .banner-box { background: #00bcd4; width: 500px; padding: 20px; border-radius: 8px; color: white; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .form-box { background: #ffffff; width: 350px; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; color: #555; }
+        select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .btn-start { background: #1976d2; color: white; border: none; width: 100%; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-start:hover { background: #115293; }
+        footer { text-align: center; color: white; margin-top: 30px; font-size: 14px; }
+        footer span { color: #ff9933; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <div style="font-weight: bold; font-size: 18px; color: #1976d2;">National Testing Agency (NTA) Mock Test</div>
+        <div><strong>English</strong> | Home</div>
+    </header>
+
+    <div class="main-container">
+        
+
+        <div class="form-box">
+            <form action="/instructions" method="POST">
+                <div class="form-group">
+                    <label>Select exam you would like to appear</label>
+                    <select name="exam" required>
+                        <option value="NEET">NEET</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+    <label>Paper</label>
+
+    <select name="paper" required>
+        <option value="">--Select--</option>
+
+        <option value="Physics">Physics Only</option>
+        <option value="Chemistry">Chemistry Only</option>
+        <option value="Biology">Biology Only</option>
+
+        <option value="Full Exam">
+            Full Exam (Physics, Chemistry &amp; Biology)
+        </option>
+    </select>
+</div>
+
+                <button type="submit" class="btn-start">START MOCK TEST</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        Welcome to <span>National Testing Agency</span>, Test Practice Centre
+    </footer>
+</body>
+</html>
